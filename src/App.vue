@@ -1,27 +1,63 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div class="base-page">
+    <VButton @click="changeDir">changedir</VButton>
+    <v-tooltip-pure :dir="dir" text="Hello world ❤">
+      <template v-slot="{attrs}">
+        <VButton v-bind="attrs">
+          Pure css
+        </VButton>
+      </template>
+    </v-tooltip-pure>
+    <v-tooltip dir="left">
+      <template v-slot:activator="{on, attrs}">
+        <VButton v-on="on" v-bind="attrs">
+          Create jiggle wiggle
+        </VButton>
+      </template>
+      <span>Jiggle tip</span>
+    </v-tooltip>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+import {defineComponent, ref} from 'vue';
+import VTooltip from './components/VTooltip.vue'
+import VButton from './components/VButton.vue'
+import VTooltipPure from './components/VTooltipPure.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
-    HelloWorld
+    VTooltip,
+    VTooltipPure,
+    VButton
+  },
+  setup() {
+    const dir = ref('bottom')
+    function changeDir() {
+      if (dir.value === 'bottom') {
+        dir.value = 'top'
+      } else if (dir.value === 'top') {
+        dir.value = 'left'
+      } else if (dir.value === 'left') {
+        dir.value = 'right'
+      } else if (dir.value === 'right') {
+        dir.value = 'bottom'
+      }
+    }
+
+    return {
+      dir,
+      changeDir
+    }
   }
 });
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+body {
+  background-color: #2f2f2f;
+  padding: 100px 10px;
 }
+
 </style>
